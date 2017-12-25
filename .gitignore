@@ -12,7 +12,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
+config/mongoid.yml
+.idea
 /node_modules
 /yarn-error.log
 
