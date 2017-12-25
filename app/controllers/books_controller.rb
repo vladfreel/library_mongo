@@ -1,3 +1,4 @@
+
 class BooksController < ApplicationController
   before_action :authenticate_user!
   def new
@@ -40,6 +41,8 @@ class BooksController < ApplicationController
   end
 
   def index
+    popular
+    @exp = [@first_book, @second_book, @third_book, @fourth_book, @fifth_book]
     @books = Book.all.page(params[:page]).per(20)
   end
 
@@ -72,8 +75,57 @@ class BooksController < ApplicationController
   end
   end
   def popular
-    @out = Book.select('books.*,
-    COUNT(likes.id) AS t_count').joins(:likes).group('
-    books.id').order('t_count DESC').limit(5)
+    @first_book = Book.first
+    @second_book = Book.first
+    @third_book = Book.first
+    @fourth_book = Book.first
+    @fifth_book = Book.first
+
+    @popular_books = Book.all
+    @popular_books.each do |book1|
+      if book1.likes.count >= @first_book.likes.count
+        @first_book = book1
+        end
+    end
+
+    @popular_books.each do |book2|
+      if book2 == @first_book
+      else
+        book2.likes.count
+        if book2.likes.count >= @second_book.likes.count
+          @second_book = book2
+        end
+      end
+    end
+
+    @popular_books.each do |book3|
+      if book3 == @second_book || book3 == @first_book
+      else
+        book3.likes.count
+        if book3.likes.count >= @third_book.likes.count
+          @third_book = book3
+        end
+      end
+    end
+
+    @popular_books.each do |book4|
+      if book4 == @third_book || book4 == @second_book || book4 == @first_book
+      else
+        book4.likes.count
+        if book4.likes.count >= @fourth_book.likes.count
+          @fourth_book = book4
+        end
+      end
+    end
+
+    @popular_books.each do |book5|
+      if book5 == @fourth_book || book5 == @third_book || book5 == @second_book || book5 == @first_book
+      else
+        book5.likes.count
+        if book5.likes.count >= @fifth_book.likes.count
+          @fifth_book = book5
+        end
+      end
+    end
   end
 end

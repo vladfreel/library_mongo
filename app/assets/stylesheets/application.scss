@@ -1,6 +1,31 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-.images{
-  width:150px;
-  height:150px;
+@media screen and (min-width: 300px) {
+  body{
+    text-align: center;
+  }
+  .images {
+    width: 150px;
+    height: 150px;
+  }
+  .top_tabs
+  {
+    margin: auto;
+  }
+  .tabs
+  {
+    margin: auto;
+  }
+}
+@media screen and (min-width: 680px) {
+  body{
+    text-align: center;
+  }
+
+}
+@media screen and (min-width: 1200px) {
+  body{
+    text-align: center;
+  }
+
 }

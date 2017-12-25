@@ -9,11 +9,17 @@
   %strong Author:
   = @book.author
 %p
+  %strong Genre:
+  = @book.genre
+%p
   %strong Img:
   %img{:src => "#{@book.img}", :class => "images"}
 %p
   %strong Description:
   = @book.description
+  - if @book.user_id == current_user.id
+    = button_to 'Delete', [@book],  method: :delete, class: "btn btn-danger btn-lg"
+    = link_to 'Edit', edit_book_path(@book)
 %br
 - @histories.each do |h|
   - if h.user == current_user && h.book == @book && h.taken_in != '' && h.returned_in == nil

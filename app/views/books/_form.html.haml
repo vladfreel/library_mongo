@@ -10,6 +10,7 @@
   .field
     = form.label :name
     = form.text_field :name, id: :book_name
+    = form.hidden_field :status, value: 'in'
   .field
     = form.label :author
     = form.text_field :author, id: :book_author

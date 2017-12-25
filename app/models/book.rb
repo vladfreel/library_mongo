@@ -3,6 +3,7 @@ class Book
   field :name, type: String
   field :status, type: String
   field :author, type: String
+  field :genre, type: String
   field :img, type: String
   field :description, type: String
   belongs_to :user
