@@ -15,5 +15,6 @@ class Book
   mount_uploader :img, ImgUploader
   validates :name, presence: true
   validates :author, presence: true
+  validates :genre, presence: true
   validates :description, presence: true
 end

@@ -4,9 +4,88 @@
   body{
     text-align: center;
   }
+  .main{
+
+  }
+  .menu{
+    position:absolute;
+    background-image: url("uploads/menu.png");
+    width: 50px;
+    height: 50px;
+  }
+  #comm{
+    width: 100%;
+    height: 100px;
+    resize: none;
+  }
+  #but_comm{
+    position: absolute;
+    right: 0;
+  }
+  .logo{
+    width: 100px;
+    height: 100px;
+  margin-left: 30px;
+  }
+  .image_show{
+    width: 370px;
+    height: 500px;
+  }
+  .search{
+    margin-right: 30px;
+  }
+  .book {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .description
+  {
+    height: 100px;
+  }
+  .start{
+    position: relative;
+    margin-left:0;
+  }
+  .desc{
+    margin: 0;
+  }
+  .genre{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  .desc_name{
+
+    text-align: left;
+    font-size: 16pt;
+    padding-left: 30px;
+    padding-top: 10px;
+    height: 50px;
+    margin: 0;
+    width: 100%;
+    background-color: darkolivegreen;
+  }
+  .desc_name a{
+    color: white;
+    text-decoration: none;
+  }
+  .desc_name a:hover{
+    color: wheat;
+    text-decoration: none;
+  }
+
   .images {
-    width: 150px;
-    height: 150px;
+    margin: 0;
+    width: 170px;
+    height: 200px;
+  }
+  .images img{
+    width: 170px;
+    height: 200px;
   }
   .top_tabs
   {
@@ -14,7 +93,41 @@
   }
   .tabs
   {
+    padding-top: 20px;
     margin: auto;
+    width: 100%;
+    height: 100%;
+    color: black;
+  }
+  .header
+  {
+    width: 100%;
+    height: 200px;
+    background-color: darkkhaki;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top_h1{
+    background-color: slategrey;
+    margin: 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: left;
+    color: white;
+    padding-left: 50px;
+  }
+  td, th {
+    padding: 0;
+    border: 1px solid white;
+  }
+  .row{
+    background-color: darkkhaki;
+
+  }
+  .col-lg-4 {
+    width: 100%;
   }
 }
 @media screen and (min-width: 680px) {
@@ -22,10 +135,49 @@
     text-align: center;
   }
 
+
+  .row{
+    background-color: darkkhaki;
+
+  }
+  .col-lg-4 {
+    width: 100%;
+  }
 }
 @media screen and (min-width: 1200px) {
   body{
     text-align: center;
   }
+  .book {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: -15px;
+    margin-right: -15px;
+    height: 97.5%;
 
+  }
+  .books{
+       width:77.2%;
+       height: 100%;
+
+       overflow-y: scroll;
+     }
+  .row{
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 100%;
+    background-color: darkkhaki;
+    width: 100%;
+  }
+  .col-lg-4 {
+    width: 50%;
+    height: 400px;
+    background-color: transparent;
+    margin-left: 0;
+    margin-right: 0;
+    border: 5px solid white;
+  }
 }

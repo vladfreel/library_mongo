@@ -55,7 +55,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:name, :author, :status, :img, :description, :user_id, tags_attributes: [:user_id, :id, :taken_in, :returned_in])
+    params.require(:book).permit(:name, :author, :genre, :status, :img, :description, :user_id, tags_attributes: [:user_id, :id, :taken_in, :returned_in])
   end
   def search_history_in
     History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
@@ -75,6 +75,7 @@ class BooksController < ApplicationController
   end
   end
   def popular
+
     @first_book = Book.first
     @second_book = Book.first
     @third_book = Book.first
