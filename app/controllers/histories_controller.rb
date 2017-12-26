@@ -1,8 +1,5 @@
 class HistoriesController < ApplicationController
   before_action :authenticate_user!
-  def new
-    @history = History.new
-  end
 
   def create
     @book = Book.find(params[:book_id])

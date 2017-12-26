@@ -1,10 +1,18 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
+  def mew
+    @like = Like.new
+    @book = Book.find(params[:book_id])
+    @likes = @book.likes
+  end
   def create
     @book = Book.find(params[:book_id])
-    @like = @book.likes.new(like_params)
-    @like.save!
-    redirect_to book_path(@book.id)
+    @like = @book.likes.build(like_params)
+    @like.save
+    respond_to do |format|
+      format.html { redirect_to book_path(@book.id) }
+      format.js
+    end
   end
 
   def destroy

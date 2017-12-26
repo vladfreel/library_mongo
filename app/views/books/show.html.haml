@@ -9,27 +9,31 @@
 %div.main
   %br
   .dropdown
-    %button.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+    %input.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "image" }
       Dropdown Example
       %span.caret
     %ul.dropdown-menu
       %li
-        = link_to 'Edit', edit_book_path(@book)
+        = link_to 'Edit', edit_book_path(@book&.id.to_s)
       %li
         - if @book.user_id == current_user.id
           = button_to 'Delete', [@book],  method: :delete, class: "btn btn-danger btn-lg"
       %li
         = link_to 'Back', books_path
       %li
+
         - if @book.status == 'in'
-          = form_for @book, url: book_path(@book.id), html: { id: "inform2" }, method: :put do |book|
+          = form_for @book, url: update_status_book_path(@book.id), method: :put do |book|
             = book.hidden_field :status, value: 'out'
             = book.submit 'Take'
         - elsif @book.status == 'out'
-          - if @t == 'true'
-            = form_for @book, url: book_path(@book.id), html: { id: "outform2" }, method: :put do |book|
-              = book.hidden_field :status, value: 'in'
-              = book.submit 'Return'
+          - @histories.each do |h|
+            - if h.user.id == current_user.id && h.taken_in != '' && h.returned_in == nil
+              = form_for @book, url: update_status_book_path(@book.id), method: :put do |book|
+                = book.hidden_field :status, value: 'in'
+                = book.submit 'Return'
+            - elsif h.taken_in != '' && h.returned_in == nil
+              %h1 This book was taken by #{h.user.email}
 
 
   %p
@@ -50,23 +54,14 @@
     %strong Описание:
     = @book.description
   %br
-  - @histories.each do |h|
-    - if h.user == current_user && h.book == @book && h.taken_in != '' && h.returned_in == nil
-      - @t = 'true'
-    - if h.taken_in != '' && h.book == @book && h.returned_in == nil
-      - @user = h.user.email
 
 
-    - else
-      %h1 This book was taken by #{@user}
 
-  - if @like
-    = link_to "<span class=\"glyphicon glyphicon-heart-empty\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}", [ @like.book, @like],  method: :delete, id: "dislike"
-  - elsif !@like
-    = form_with(model: [ @book, @book.likes.build ], html: { id: "add_like" }, remote: true, local: true) do |form|
-      = form.hidden_field :user_id, value: current_user.id
-      = form.hidden_field :book_id, value: @book.id
-      = link_to "<span class=\"glyphicon glyphicon-heart\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}",'', class: "like", :onclick => "$('#add_like').submit()"
+
+  - if @like != nil && @like.user_id == current_user.id && @like.book_id == @book.id
+    = link_to "<span class=\"glyphicon glyphicon-heart-empty\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}", [ @like.book, @like], remote: true,  method: :delete, id: "dislike"
+  - elsif @like.nil? || @like.user_id != current_user.id && @like.book_id != @book.id
+    = link_to("<span class=\"glyphicon glyphicon-heart\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}",book_likes_path(@book.id, like: {user_id: current_user.id, book_id: @book.id}),method: :post, remote: true )
   %br
 
 

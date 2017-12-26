@@ -7,9 +7,22 @@
   .main{
 
   }
+  .btn-primary {
+    color: #fff;
+
+
+    border-color: #2e6da4;
+    position: absolute;
+    left: 0;
+  }
+  .dropup, .dropdown {
+
+    background-position: left;
+  }
   .menu{
+    background-color: transparent;
+    color: transparent;
     position:absolute;
-    background-image: url("uploads/menu.png");
     width: 50px;
     height: 50px;
   }
