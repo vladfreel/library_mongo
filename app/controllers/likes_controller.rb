@@ -1,14 +1,8 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
-  def mew
-    @like = Like.new
-    @book = Book.find(params[:book_id])
-    @likes = @book.likes
-  end
   def create
     @book = Book.find(params[:book_id])
-    @like = @book.likes.build(like_params)
-    @like.save
+    @like = @book.likes.create(like_params)
     respond_to do |format|
       format.html { redirect_to book_path(@book.id) }
       format.js
@@ -18,8 +12,11 @@ class LikesController < ApplicationController
   def destroy
     @book = Book.find(params[:book_id])
     @like = @book.likes.find(params[:id])
-    @like.destroy
-    redirect_to book_path(@book.id)
+    @like.delete
+    respond_to do |format|
+      format.html { redirect_to book_path(@book.id) }
+      format.js
+    end
   end
 
   private

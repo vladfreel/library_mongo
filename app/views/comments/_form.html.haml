@@ -1,0 +1,5 @@
+= form_with(model: [ @book, @book.comments.build ], remote: true) do |form|
+  = form.text_area :body, id: "comm"
+  = form.hidden_field :user_id, value: current_user.id
+  = form.hidden_field :book_id, value: @book.id
+  = form.submit "Написать", id: "but_comm"

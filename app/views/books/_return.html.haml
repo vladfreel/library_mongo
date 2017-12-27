@@ -1,0 +1,3 @@
+= form_for @book, url: update_status_book_path(@book.id), method: :put, remote: true, id: "take" do |book|
+  = book.hidden_field :status, value: 'out'
+  = book.submit 'Take'

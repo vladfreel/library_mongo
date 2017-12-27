@@ -15,7 +15,7 @@ class BooksController < ApplicationController
     redirect_to @book
   end
 
-  def update
+  def update_take
     @histories = History.all
     @book = Book.find(params[:id])
     @book.update!(book_params)
@@ -34,7 +34,10 @@ class BooksController < ApplicationController
         end
       end
     @book.update(book_params)
-    redirect_to @book
+    respond_to do |format|
+      format.html { redirect_to book_path(@book.id) }
+      format.js
+    end
   end
 
   def show
@@ -44,6 +47,10 @@ class BooksController < ApplicationController
     @comments = Comment.where(book_id: @book.id)
     @histories = @book.histories.all
     @like = @book.likes.find_by(user_id: current_user.id)
+    respond_to do |format|
+      format.html
+      format.json { render json: @book }
+    end
   end
 
   def index
@@ -68,6 +75,6 @@ class BooksController < ApplicationController
 
   end
   def popular
-    @popular_books = Book.all.sort { |x,y| x.likes.count <=> y.likes.count }.reverse
+    @popular_books = Book.all.sort { |x,y| x.likes.count <=> y.likes.count; x.histories.count <=> y.histories.count;}.reverse
   end
 end

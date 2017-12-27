@@ -38,7 +38,7 @@
 
 %h1.top_h1
   Books
-%div.row
+%div{"data-books": "= #{@books.to_json}", class: "row"}
   - @books.each do |b|
     %div.col-lg-4
       %div.book
@@ -51,6 +51,9 @@
             %tr
               %td Genre
               %td= b.genre
+            %tr
+              %td Rate
+              %td= rating_for b
             %tr
               %td Status
               %td= b.status

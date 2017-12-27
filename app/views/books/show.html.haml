@@ -6,34 +6,18 @@
     %p
       Search
       %input{:type => "search", :class => "search"}
-%div.main
+%div{class: "main"}
+  = @book.to_json
   %br
   .dropdown
-    %input.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "image" }
-      Dropdown Example
-      %span.caret
+    %input.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown",:value => "" ,readonly: "true"}
     %ul.dropdown-menu
       %li
-        = link_to 'Edit', edit_book_path(@book&.id.to_s)
+        = button_to 'Edit', edit_book_path(@book),  method: :get
       %li
         - if @book.user_id == current_user.id
-          = button_to 'Delete', [@book],  method: :delete, class: "btn btn-danger btn-lg"
+          = button_to 'Delete', [@book],  method: :delete
       %li
-        = link_to 'Back', books_path
-      %li
-
-        - if @book.status == 'in'
-          = form_for @book, url: update_status_book_path(@book.id), method: :put do |book|
-            = book.hidden_field :status, value: 'out'
-            = book.submit 'Take'
-        - elsif @book.status == 'out'
-          - @histories.each do |h|
-            - if h.user.id == current_user.id && h.taken_in != '' && h.returned_in == nil
-              = form_for @book, url: update_status_book_path(@book.id), method: :put do |book|
-                = book.hidden_field :status, value: 'in'
-                = book.submit 'Return'
-            - elsif h.taken_in != '' && h.returned_in == nil
-              %h1 This book was taken by #{h.user.email}
 
 
   %p
@@ -53,32 +37,37 @@
   %p
     %strong Описание:
     = @book.description
+  %p
+    %strong Рейтинг:
+    = rating_for @book
   %br
-
 
 
 
   - if @like != nil && @like.user_id == current_user.id && @like.book_id == @book.id
-    = link_to "<span class=\"glyphicon glyphicon-heart-empty\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}", [ @like.book, @like], remote: true,  method: :delete, id: "dislike"
+    #dislike
+      = render "likes/form_dislike"
   - elsif @like.nil? || @like.user_id != current_user.id && @like.book_id != @book.id
-    = link_to("<span class=\"glyphicon glyphicon-heart\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}",book_likes_path(@book.id, like: {user_id: current_user.id, book_id: @book.id}),method: :post, remote: true )
+    #like
+      = render "likes/form_like"
   %br
 
+  - if @book.status == 'in'
+    #take
+      = render "books/form_take"
+  - elsif @book.status == 'out'
+    #return
+      = render "books/form_return"
 
+  = button_to 'Back', books_path, method: 'get'
   %br
-  - @book.comments.each do |comm|
-    %br
-    = comm.user.email
-    %br
-    = comm.body
-  %br
-  %br
-  %br
-  = form_with(model: [ @book, @book.comments.build ], local: true) do |form|
-    = form.text_area :body, id: "comm"
-    = form.hidden_field :user_id, value: current_user.id
-    = form.hidden_field :book_id, value: @book.id
-    = form.submit "Написать", id: "but_comm"
+  %h2 Comments:
+  #com
+    = render @book.comments
+  %h2 Add a comment:
+  = render "comments/form"
+
+
   - if @histories.empty?
   - else
     %table

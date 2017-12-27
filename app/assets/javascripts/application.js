@@ -1,6 +1,6 @@
+//= require rails-ujs
 //= require jquery
 //= require jquery_ujs
-//= require rails-ujs
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
@@ -12,4 +12,3 @@
 //             data: { 'user_id': $('user_id').val(), 'book_id': $('book_id').val() }
 //         })
 //     });
-// });

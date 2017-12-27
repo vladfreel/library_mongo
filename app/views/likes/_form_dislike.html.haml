@@ -1,0 +1,1 @@
+= link_to("<span class=\"glyphicon glyphicon-heart-empty\" style=\"color:red\"></span>".html_safe+" #{@book.likes.count}",[ @like.book, @like ],  method: :delete, remote: true, id: "dislike")
