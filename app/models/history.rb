@@ -1,3 +1,4 @@
+# History
 class History
   include Mongoid::Document
   belongs_to :book

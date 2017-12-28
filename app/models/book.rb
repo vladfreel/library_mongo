@@ -1,3 +1,4 @@
+# Book
 class Book
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -20,5 +21,4 @@ class Book
   validates :author, presence: true
   validates :genre, presence: true
   validates :description, presence: true
-
 end

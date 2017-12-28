@@ -1,3 +1,4 @@
+# Histories
 class HistoriesController < ApplicationController
   before_action :authenticate_user!
 
@@ -11,7 +12,7 @@ class HistoriesController < ApplicationController
   def update
     @book = Book.find(params[:book_id])
     @history = History.find(params[:id])
-    @history.update_take(history_params)
+    @history.update(history_params)
     redirect_to book_path(@book.id)
   end
 

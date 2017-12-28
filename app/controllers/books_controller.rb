@@ -1,6 +1,5 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
-  before_action :search_history, only: [:update_status]
   def new
     @book = Book.new
   end
@@ -15,24 +14,31 @@ class BooksController < ApplicationController
     redirect_to @book
   end
 
-  def update_take
+  def update
     @histories = History.all
     @book = Book.find(params[:id])
     @book.update!(book_params)
   end
 
-  def update_status
+  def update_status_in
     @histories = History.all
     @book = Book.find(params[:id])
-      if @book.status == 'in'
-        History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
-      elsif @book.status == 'out'
-        @histories.each do |h|
-          if h.user.id == current_user.id && h.taken_in != '' && h.returned_in == nil
-            h.update(returned_in: DateTime.now)
-          end
-        end
+    History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
+    @book.update(book_params)
+    respond_to do |format|
+      format.html { redirect_to book_path(@book.id) }
+      format.js
+    end
+  end
+
+  def update_status_out
+    @histories = History.all
+    @book = Book.find(params[:id])
+    @histories.each do |h|
+      if h.user.id == current_user.id && h.taken_in != '' && h.returned_in == nil
+        h.update(returned_in: DateTime.now)
       end
+    end
     @book.update(book_params)
     respond_to do |format|
       format.html { redirect_to book_path(@book.id) }
@@ -70,10 +76,6 @@ class BooksController < ApplicationController
     params.require(:book).permit(:name, :author, :genre, :status, :img, :description, :user_id)
   end
 
-  def search_history
-
-
-  end
   def popular
     @popular_books = Book.all.sort { |x,y| x.likes.count <=> y.likes.count; x.histories.count <=> y.histories.count;}.reverse
   end

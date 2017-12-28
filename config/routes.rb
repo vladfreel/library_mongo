@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   devise_for :users
   resources :books do
     member do
-      patch :update_status
-      put :update_status
+      patch :update_status_in
+      put :update_status_in
+      patch :update_status_out
+      put :update_status_out
     end
     resources :histories
     resources :comments

@@ -7,13 +7,13 @@
       Search
       %input{:type => "search", :class => "search"}
 %div{class: "main"}
-  = @book.to_json
   %br
   .dropdown
     %input.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown",:value => "" ,readonly: "true"}
     %ul.dropdown-menu
       %li
-        = button_to 'Edit', edit_book_path(@book),  method: :get
+        - if @book.user_id == current_user.id
+          = button_to 'Edit', edit_book_path(@book),  method: :get
       %li
         - if @book.user_id == current_user.id
           = button_to 'Delete', [@book],  method: :delete

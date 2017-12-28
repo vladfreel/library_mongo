@@ -1,3 +1,7 @@
-= form_for @book, url: update_status_book_path(@book.id), method: :put, remote: true, id: "return" do |book|
-  = book.hidden_field :status, value: 'in'
-  = book.submit 'Return'
+- @histories.each do |h|
+  - if h.user.id == current_user.id && h.taken_in != '' && h.returned_in == nil
+    = form_for @book, url: update_status_out_book_path(@book.id), method: :put, remote: true, id: "return" do |book|
+      = book.hidden_field :status, value: 'in'
+      = book.submit 'Return'
+  - elsif h.taken_in != '' && h.returned_in == nil
+    %h1 This book was taken by #{h.user.email}
