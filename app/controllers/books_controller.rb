@@ -18,6 +18,7 @@ class BooksController < ApplicationController
     @histories = History.all
     @book = Book.find(params[:id])
     @book.update!(book_params)
+    redirect_to book_path(@book.id)
   end
 
   def update_status_in

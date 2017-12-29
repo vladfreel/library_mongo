@@ -15,11 +15,8 @@ RSpec.describe BooksController, type: :controller do
   describe 'CREATE' do
     it 'create book(CREATE)' do
       expect do
-        post :create,
-             params: { book: attributes_for(:book,
-                                                user_id: @user) }
-      end.to change { Book.count }.by(1) and
-          redirect_to Book.last && have_http_status(200)
+        post :create, params: { book: attributes_for(:book, user_id: @user.id) }
+      end.to change { Book.count }.by(1) and redirect_to Book.last && have_http_status(200)
     end
   end
 
@@ -39,12 +36,52 @@ RSpec.describe BooksController, type: :controller do
   end
 
   describe 'SHOW' do
-    it 'assigns the requested category to @category' do
+    it 'assigns the requested book to @book' do
       book = create(:book, user_id: @user.id)
+      @like = create(:like, book_id: book.id, user_id: @user.id)
       get :show, params: { id: book.id }
       expect(assigns(:book)).to eq(book)
       expect(response).to render_template(:show)
       expect(response).to have_http_status(200)
+    end
+  end
+
+  describe 'PUT #update' do
+    before(:each) do
+      @book = create(:book, user_id: @user.id)
+    end
+    context 'with good data' do
+      it "updates book" do
+        put :update, params:{ id: @book.id, book: { name: "xyz", author: "asdgfas", status: "in", img: "asf", genre: "asdfgva", description: "dsgdas"}}
+        expect(response).to redirect_to @book
+        expect(response).to have_http_status(302)
+      end
+    end
+  end
+
+  describe 'PUT #update_status_in' do
+    before(:each) do
+      @book = create(:book, user_id: @user.id, status: 'in')
+    end
+    context 'with good data' do
+      it "updates status to out" do
+        put :update_status_in, params:{ id: @book.id, book: { status: "out"}}
+        expect(response).to redirect_to @book
+        expect(response).to have_http_status(302)
+      end
+    end
+  end
+
+  describe 'PUT #update_status_out' do
+    before(:each) do
+      @book = create(:book, user_id: @user.id, status: 'out')
+    end
+    context 'with good data' do
+      it "updates status to in" do
+        put :update_status_out, params:{ id: @book.id, book: { status: "in"}}
+        expect(response).to redirect_to @book
+        expect(response).to have_http_status(302)
+      end
     end
   end
 
@@ -53,7 +90,7 @@ RSpec.describe BooksController, type: :controller do
       book = create(:book, user_id: @user.id)
       expect do
         delete :destroy, params: { id: book }
-      end.to change(Category, :count).by(-1)
+      end.to change(Book, :count).by(-1)
       expect(response).to have_http_status(302)
     end
 

@@ -10,11 +10,11 @@ class Book
   field :genre, type: String
   field :img, type: String
   field :description, type: String
-  belongs_to :user
+  belongs_to :user, class_name: 'User', foreign_key: :user_id
   attr_accessor :img
-  has_many :likes, dependent: :delete
-  has_many :comments, dependent: :delete
-  has_many :histories, dependent: :delete
+  has_many :likes, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :histories, dependent: :destroy
   accepts_nested_attributes_for :histories
   mount_uploader :img, ImgUploader
   validates :name, presence: true

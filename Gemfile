@@ -66,6 +66,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
   gem 'database_cleaner'
+  gem 'mongoid-rspec', github: 'mongoid-rspec/mongoid-rspec'
   #gem 'database_cleaner'
 end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -1,9 +1,8 @@
 # User
 class User
   include Mongoid::Document
-  include Mongoid::Timestamps
   include Mongoid::Letsrate
-  letsrate_rater
+
   has_many :books
   has_many :histories
   has_many :likes
@@ -35,4 +34,5 @@ class User
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
+   #letsrate_rater
 end
