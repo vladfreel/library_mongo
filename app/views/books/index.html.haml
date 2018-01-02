@@ -1,72 +1,74 @@
--#= Book.all.entries.each { |b| b }
-%div.header
-  %div
-    %img{:src => "/uploads/book.png", :class => "logo"}
-  %div
-    %p
-      Search
-      %input{:type => "search", :class => "search"}
+-#.header
+-#  %div
+-#    %img{src: '/uploads/book.png', class: 'logo'}
+-#  %div
+-#    %p
+-#      Поиск
+-#      %input{type: 'search', class: 'search'}
 %h1.top_h1
-  Top 5 Books
-%div.row
-  - @popular_books.take(5).each do |b|
-    %div.col-lg-4
-      %div.book
-        %div
-          %img{:src => "#{b.img}", :class => "images"}
-        %div.desc
-          %div.desc_name
-            = link_to b.name, book_path(b)
-          %table.tabs
-            %tr
-              %td Genre
-              %td= b.genre
-            %tr
-              %td Status
-              %td= b.status
-            %tr
-              %td Author
-              %td= b.author
-            %tr
-              %td User
-              %td= b.user.email
-            %tr
-              %td Description
-              %td= b.description
+  Топ 5 книг
+
+.back_row
+  .row
+    - @popular_books.take(5).each do |b|
+      .col-lg-4
+        .book
+          %div
+            %img{src: "#{b.img}", class: 'images'}
+          .desc
+            .desc_name
+              = link_to b.name, book_path(b)
+            %table.tabs
+              %tr
+                %td Жанр
+                %td= b.genre
+              %tr
+                %td Статус
+                %td= b.status
+              %tr
+                %td Автор
+                %td= b.author
+              %tr
+                %td Кто добавил
+                %td= b.user.email
+              %tr
+                %td Описание
+                %td= b.description
 
 
 
 %h1.top_h1
-  Books
-%div{"data-books": "= #{@books.to_json}", class: "row"}
-  - @books.each do |b|
-    %div.col-lg-4
-      %div.book
-        %div
-          %img{:src => "#{b.img}", :class => "images"}
-        %div.desc
-          %div.desc_name
-            = link_to b.name, book_path(b)
-          %table.tabs
-            %tr
-              %td Genre
-              %td= b.genre
-            %tr
-              %td Rate
-              /%td= rating_for b
-            %tr
-              %td Status
-              %td= b.status
-            %tr
-              %td Author
-              %td= b.author
-            %tr
-              %td User
-              %td= b.user.email
-            %tr
-              %td Description
-              %td= b.description
-  = paginate @books
+  Книги
+.back_row
+  .row
+    - @books.order(created_at: 'desc').each do |b|
+      .col-lg-4
+        .book
+          %div
+            %img{src: "#{b.img}", class: 'images'}
+          .desc
+            .desc_name
+              = link_to b.name, book_path(b)
+            %table.tabs
+              %tr
+                %td Жанр
+                %td= b.genre
+              %tr
+                %td Рейтинг
+                /%td= rating_for b
+              %tr
+                %td Статус
+                %td= b.status
+              %tr
+                %td Автор
+                %td= b.author
+              %tr
+                %td Кто добавил
+                %td= b.user.email
+              %tr
+                %td Описание
+                %td= b.description
+    = paginate @books
 %br
 = link_to 'New Book', new_book_path
-= link_to "Exit", destroy_user_session_path, :method => :delete
+= link_to 'Exit', destroy_user_session_path, method: :delete

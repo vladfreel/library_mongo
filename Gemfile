@@ -42,6 +42,7 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'active_model_serializers'
 gem 'mongoid-letsrate'
+gem 'mongoid_search'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

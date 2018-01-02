@@ -1,6 +1,5 @@
 require 'rails_helper'
 RSpec.describe 'routes for Histories', type: :routing do
-
   it do
     should route(:get, '/books/1/histories/new').to('histories#new', action: :new, book_id: 1)
   end

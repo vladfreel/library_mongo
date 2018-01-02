@@ -1,12 +1,12 @@
 require 'rails_helper'
 RSpec.describe Book, type: :model do
   it { is_expected.to be_mongoid_document }
-  it { is_expected.to have_field(:name).of_type(String)}
-  it { is_expected.to have_field(:author).of_type(String)}
-  it { is_expected.to have_field(:status).of_type(String)}
-  it { is_expected.to have_field(:genre).of_type(String)}
-  it { is_expected.to have_field(:img).of_type(Object)}
-  it { is_expected.to have_field(:description).of_type(String)}
+  it { is_expected.to have_field(:name).of_type(String) }
+  it { is_expected.to have_field(:author).of_type(String) }
+  it { is_expected.to have_field(:status).of_type(String) }
+  it { is_expected.to have_field(:genre).of_type(String) }
+  it { is_expected.to have_field(:img).of_type(String) }
+  it { is_expected.to have_field(:description).of_type(String) }
   it { is_expected.to belong_to(:user).of_type(User).with_foreign_key(:user_id) }
   it { is_expected.to have_many(:comments).with_dependent(:destroy) }
   it { is_expected.to have_many(:likes).with_dependent(:destroy) }

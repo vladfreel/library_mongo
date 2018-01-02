@@ -1,83 +1,98 @@
 %require_tree
-%div.header
-  %div
-    %img{:src => "/uploads/book.png", :class => "logo"}
-  %div
-    %p
-      Search
-      %input{:type => "search", :class => "search"}
-%div{class: "main"}
+-#%div.header
+-#  %div
+-#    %img{src: '/uploads/book.png', class: 'logo'}
+-#  %div
+-#    %p
+-#      Search
+-#      %input{type: 'search', class: 'search'}
+
+
+.main
   %br
-  .dropdown
-    %input.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown",:value => "" ,readonly: "true"}
-    %ul.dropdown-menu
-      %li
-        - if @book.user_id == current_user.id
-          = button_to 'Edit', edit_book_path(@book),  method: :get
-      %li
-        - if @book.user_id == current_user.id
-          = button_to 'Delete', [@book],  method: :delete
-      %li
+  %br
+  .home
+    = button_to 'Главная', books_path, method: 'get'
+    - if @book.user_id == current_user.id
+      .dropdown
+        %input.btn.btn-primary.dropdown-toggle{'data-toggle' => 'dropdown',:value => '' ,readonly: 'true'}
+        %ul.dropdown-menu
+          %li
+            - if @book.status == 'in'
+              = button_to 'Edit', edit_book_path(@book),  method: :get
+          %li
+            = button_to 'Delete', [@book],  method: :delete
+          %li
 
-
-  %p
-    %img{:src => "#{@book.img}", :class => "image_show"}
-  %p
-    %strong Название:
-    = @book.name
-  %p
-    %strong Статус:
-    = @book.status
-  %p
-    %strong Автор:
-    = @book.author
-  %p
-    %strong Жанр:
-    = @book.genre
-  %p
-    %strong Описание:
-    = @book.description
-  %p
-    %strong Рейтинг:
-    /= rating_for @book
+  %br
+  %br
   %br
 
 
-
-  - if @like != nil && @like.user_id == current_user.id && @like.book_id == @book.id
-    #dislike
-      = render "likes/form_dislike"
-  - elsif @like.nil? || @like.user_id != current_user.id && @like.book_id != @book.id
-    #like
-      = render "likes/form_like"
+  .row
+    .col-md-4
+      %img{src: "#{@book.img}", class: 'image_show'}
+      .take_like
+        .row
+          .col-md-6
+            - if @book.status == 'in'
+              #take
+                = render 'books/form_take'
+            - elsif @book.status == 'out'
+              #return
+                = render 'books/form_return'
+          .col-md-6
+            - if @like != nil && @like.user_id == current_user.id && @like.book_id == @book.id
+              #dislike
+                = render 'likes/form_dislike'
+            - elsif @like.nil? || @like.user_id != current_user.id && @like.book_id != @book.id
+              #like
+                = render 'likes/form_like'
+    .col-md-8
+      .info
+        %p
+          Название:
+          %strong= @book.name
+        %p
+          Статус:
+          %strong= @book.status
+        %p
+          Автор:
+          %strong= @book.author
+        %p
+          Жанр:
+          %strong= @book.genre
+        %p
+          %strong Описание:
+          %br
+          %br
+          = @book.description
+        %p
+          /Рейтинг:
+          /%strong= rating_for @book
+        %br
   %br
-
-  - if @book.status == 'in'
-    #take
-      = render "books/form_take"
-  - elsif @book.status == 'out'
-    #return
-      = render "books/form_return"
-
-  = button_to 'Back', books_path, method: 'get'
-  %br
-  %h2 Comments:
-  #com
-    = render @book.comments
-  %h2 Add a comment:
-  = render "comments/form"
-
-
-  - if @histories.empty?
-  - else
-    %table
-      %tr
-        %th User
-        %th Taken in
-        %th Returned in
-      - @histories.each do |history|
-        %tr
-          %td= history.user.email
-          %td= history.taken_in
-          %td= history.returned_in
+  .footer
+    .row
+      .col-lg-6
+        %h2 Комментарии:
+        #com
+          = render @book.comments.order_by(created_at: 'desc')
+        = render 'comments/form'
+      .col-lg-6
+        .histories
+          %h2 История:
+          %table
+            %thead
+              %tr
+                %th Пользователь
+                %th Когда взял
+                %th Когда вернул
+            %tbody
+              - @book.histories.order_by(taken_in: 'desc').each do |history|
+                %tr
+                  %td= history.user.email
+                  %td= history.taken_in
+                  %td= history.returned_in
+          %br
 

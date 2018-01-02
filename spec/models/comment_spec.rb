@@ -1,7 +1,7 @@
 require 'rails_helper'
 RSpec.describe Comment, type: :model do
   it { is_expected.to be_mongoid_document }
-  it { is_expected.to have_field(:body).of_type(String)}
+  it { is_expected.to have_field(:body).of_type(String) }
   it { is_expected.to belong_to(:user).of_type(User) }
   it { is_expected.to belong_to(:book).of_type(Book) }
   describe '#body' do

@@ -1,58 +1,14 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
-  def new
-    @book = Book.new
-  end
+  before_action :popular, only: :index
+  before_action :find_book, only: [:show, :update, :edit, :update, :destroy]
+  before_action :update_status, only: :update
 
-  def edit
-    @book = Book.find(params[:id])
-  end
-
-  def create
-    @book = Book.create(book_params)
-    @book.save!
-    redirect_to @book
-  end
-
-  def update
-    @histories = History.all
-    @book = Book.find(params[:id])
-    @book.update!(book_params)
-    redirect_to book_path(@book.id)
-  end
-
-  def update_status_in
-    @histories = History.all
-    @book = Book.find(params[:id])
-    History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
-    @book.update(book_params)
-    respond_to do |format|
-      format.html { redirect_to book_path(@book.id) }
-      format.js
-    end
-  end
-
-  def update_status_out
-    @histories = History.all
-    @book = Book.find(params[:id])
-    @histories.each do |h|
-      if h.user.id == current_user.id && h.taken_in != '' && h.returned_in == nil
-        h.update(returned_in: DateTime.now)
-      end
-    end
-    @book.update(book_params)
-    respond_to do |format|
-      format.html { redirect_to book_path(@book.id) }
-      format.js
-    end
+  def index
+    @books = Book.all.page(params[:page]).per(20)
   end
 
   def show
-    @histories = History.all
-    @books = Book.all
-    @book = Book.find(params[:id])
-    @comments = Comment.where(book_id: @book.id)
-    @histories = @book.histories.all
     @like = @book.likes.find_by(user_id: current_user.id)
     respond_to do |format|
       format.html
@@ -60,13 +16,24 @@ class BooksController < ApplicationController
     end
   end
 
-  def index
-    popular
-    @books = Book.all.page(params[:page]).per(20)
+  def new
+    @book = Book.new
+  end
+
+  def edit
+  end
+
+  def create
+    @book = Book.create!(book_params)
+    redirect_to @book
+  end
+
+  def update
+    @book.update!(book_params)
+    redirect_to book_path(@book.id)
   end
 
   def destroy
-    @book = Book.find(params[:id])
     @book.destroy!
     redirect_to books_path
   end
@@ -77,7 +44,20 @@ class BooksController < ApplicationController
     params.require(:book).permit(:name, :author, :genre, :status, :img, :description, :user_id)
   end
 
+  def update_status
+    if book_params[:status] == 'out'
+      History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
+    elsif book_params[:status] == 'in'
+      @histories = History.where(user_id: current_user.id, returned_in: nil, book_id: @book.id)
+      @histories.update(returned_in: DateTime.now) unless @histories.empty?
+    end
+  end
+
+  def find_book
+    @book = Book.find(params[:id])
+  end
+
   def popular
-    @popular_books = Book.all.sort { |x,y| x.likes.count <=> y.likes.count; x.histories.count <=> y.histories.count;}.reverse
+    @popular_books = Book.all.order_by(likes_count: :desc, histories_count: :desc)
   end
 end

@@ -1,16 +1,14 @@
 # Histories
 class HistoriesController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_book, only: [:create, :update]
 
   def create
-    @book = Book.find(params[:book_id])
-    @history = @book.histories.new(history_params)
-    @history.save!
+    @history = @book.histories.create!(history_params)
     redirect_to book_path(@book.id)
   end
 
   def update
-    @book = Book.find(params[:book_id])
     @history = History.find(params[:id])
     @history.update(history_params)
     redirect_to book_path(@book.id)
@@ -20,5 +18,9 @@ class HistoriesController < ApplicationController
 
   def history_params
     params.require(:history).permit(:user_id, :book_id, :taken_in, :returned_in)
+  end
+
+  def find_book
+    @book = Book.find(params[:book_id])
   end
 end

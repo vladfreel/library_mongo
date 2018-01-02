@@ -1,7 +1,12 @@
-%p
-  %strong Commenter:
-  = comment.user.email
-%p
-  %strong Comment:
-  = comment.body
+.comment
+  %br
+  %br
+  %table.comment_tr
+    %tr
+      %th
+        %strong= comment.user.email
+      %th.com_body
+        = comment.body
+  %br
+  %br
 %hr

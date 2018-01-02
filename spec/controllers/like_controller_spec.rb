@@ -11,13 +11,18 @@ RSpec.describe LikesController, type: :controller do
     it 'create comment(CREATE)' do
       expect do
         post :create,
-             params: { like: attributes_for(:like, user_id: @user.id), book_id: @book.id }
+             params: { like: attributes_for(:like,
+                                            user_id: @user.id),
+                       book_id: @book.id }
       end.to change { Like.count }.by(1) and have_http_status(200)
     end
   end
+
   describe 'DELETE destroy' do
     it 'deletes the like' do
-      like = create(:like, user_id: @user.id, book_id: @book.id)
+      like = create(:like,
+                    user_id: @user.id,
+                    book_id: @book.id)
       expect do
         delete :destroy, params: { book_id: @book.id, id: like }
       end.to change(Like, :count).by(-1)
