@@ -32,7 +32,7 @@
         null,
         null
       ],
-      "/home/pupirev/RubymineProjects/library_mongo/spec/features/create_book_spec.rb": [
+      "/home/pupirev/RubymineProjects/library_mongo/spec/features/delete_book_spec.rb": [
         1,
         1,
         2,
@@ -47,6 +47,9 @@
         1,
         1,
         null,
+        1,
+        1,
+        1,
         1,
         1,
         1,
@@ -271,6 +274,6 @@
         null
       ]
     },
-    "timestamp": 1514985396
+    "timestamp": 1514987249
   }
 }
