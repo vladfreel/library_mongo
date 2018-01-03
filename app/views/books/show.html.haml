@@ -6,8 +6,6 @@
 -#    %p
 -#      Search
 -#      %input{type: 'search', class: 'search'}
-
-
 .main
   %br
   %br
@@ -55,10 +53,7 @@
           %strong= @book.name
         %p
           Статус:
-          - if @book.status == 'in'
-            %img{src: "/green2.png", class: 'status'}
-          - else
-            %img{src: "/red.png", class: 'status'}
+          %img{src: @book.status == 'in' ? "/green2.png" : "/red.png", class: 'status'}
         %p
           Автор:
           %strong= @book.author
@@ -98,4 +93,3 @@
                   %td= history.taken_in
                   %td= history.returned_in
           %br
-

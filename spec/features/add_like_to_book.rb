@@ -19,5 +19,6 @@ describe 'add like to book' do
     expect(current_path) == book_path(id: book)
     click_on('like')
     expect(Like.count).to eq(1)
+    expect(current_path) == book_path(id: book)
   end
 end
