@@ -33,6 +33,7 @@ require 'rspec/rails'
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include Mongoid::Matchers, type: :model
+  Capybara.raise_server_errors = false
   Capybara.javascript_driver = :selenium
   Capybara.register_driver :selenium do |app|
     options = { url_blacklist: ['http://www.example.com/avatars/original/missing.png'] }
