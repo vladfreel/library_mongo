@@ -1,8 +1,6 @@
 %body.body_color
   .back_row
-    .row
     .col-lg-2
-
     .col-lg-8
       .main_head_wrap
         .butts
@@ -27,12 +25,7 @@
                         |
                         = b.genre
                         |
-                        - if b.status == 'in'
-                          Статус
-                          %img{src: "/uploads/green2.png", class: 'status'}
-                        - else
-                          Статус
-                          %img{src: "/uploads/red.png", class: 'status'}
+                        %img{src: b.status == 'in' ? "/uploads/green2.png" : "/uploads/red.png", class: 'status'}
                     %tr
                       %td
                         = b.description
