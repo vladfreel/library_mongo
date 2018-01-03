@@ -55,7 +55,10 @@
           %strong= @book.name
         %p
           Статус:
-          %strong= @book.status
+          - if @book.status == 'in'
+            %img{src: "/uploads/green2.png", class: 'status'}
+          - else
+            %img{src: "/uploads/red.png", class: 'status'}
         %p
           Автор:
           %strong= @book.author
