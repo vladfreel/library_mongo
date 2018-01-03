@@ -25,7 +25,7 @@
                         |
                         = b.genre
                         |
-                        %img{src: b.status == 'in' ? "/green2.png" : "/red.png", class: 'status'}
+                        %img{src: b.status == 'in' ? "/uploads/green2.png" : "/uploads/red.png", class: 'status'}
                     %tr
                       %td
                         = b.description
@@ -54,10 +54,10 @@
                         |
                         - if b.status == 'in'
                           Статус
-                          %img{src: "/green2.png", class: 'status'}
+                          %img{src: "/uploads/green2.png", class: 'status'}
                         - else
                           Статус
-                          %img{src: "/red.png", class: 'status'}
+                          %img{src: "/uploads/red.png", class: 'status'}
                     %tr
                       %td
                         = b.description
