@@ -1,36 +1,47 @@
-%div.header
-  %div
-    %img{src: '/uploads/book.png', class: 'logo'}
-  %div
-    %p
-      Search
-      %input{type: 'search', class: 'search'}
+%body.body_color
+  .back_row
+    .row
+    .col-lg-2
 
-= form_with(model: book, local: true) do |form|
-  - if book.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(book.errors.count, 'error')
-        prohibited this book from being saved:
-      %ul
-        - book.errors.full_messages.each do |message|
-          %li= message
-  .field
-    = form.label :name
-    = form.text_field :name, id: :book_name
-  .field
-    = form.label :genre
-    = form.text_field :genre, id: :book_genre
-  .field
-    = form.label :author
-    = form.text_field :author, id: :book_author
-  .field
-    = form.label :img
-    = form.file_field :img, id: :book_img
-  .field
-    = form.label :description
-    = form.text_area :description, id: :book_description
-    = form.hidden_field :user_id, value: current_user.id
-    = form.hidden_field :status, value: 'in'
-  .actions
-    = form.submit
+    .col-lg-8
+      .main_head_wrap
+        .butts
+          = link_to 'Главная', books_path
+      %h1.top_h1
+      = form_with(model: book, local: true, id: 'form_c') do |form|
+        - if book.errors.any?
+          #error_explanation
+            %h2
+              = pluralize(book.errors.count, 'error')
+              prohibited this book from being saved:
+            %ul
+              - book.errors.full_messages.each do |message|
+                %li= message
+        %br
+        .field
+          = form.label 'Название'
+          = form.text_field :name, id: :book_name
+        %br
+        .field
+          = form.label 'Жанр'
+          = form.text_field :genre, id: :book_genre
+        %br
+        .field
+          = form.label 'Автор'
+          = form.text_field :author, id: :book_author
+        %br
+        .field
+          = form.label 'Картинка'
+          = form.file_field :img, id: :book_img
+        %br
+        .field
+          = form.label 'Описание'
+          = form.text_area :description, id: :book_description
+          = form.hidden_field :user_id, value: current_user.id
+          = form.hidden_field :status, value: 'in'
+        %br
+        .actions
+          = form.submit
+    .col-lg-2
+      %br
+

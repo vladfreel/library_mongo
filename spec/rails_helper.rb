@@ -33,6 +33,7 @@ require 'rspec/rails'
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include Mongoid::Matchers, type: :model
+  Capybara.raise_server_errors = false
   Capybara.javascript_driver = :selenium
   Capybara.register_driver :selenium do |app|
     options = { url_blacklist: ['http://www.example.com/avatars/original/missing.png'] }
@@ -91,17 +92,5 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  def sign_in(user, options={})
-    if options[:no_capybara]
-      #Sign in when not using Capybara
-      remember_token = User.new_remember_token
-      cookies[:remember_token] = remember_token
-      user.update_attribute(:remember_token, User.encrypt(remember_token))
-    else
-      visit 'users/sign_in'
-      fill_in "email",    with: user.email
-      fill_in "pass", with: user.password
-      click_button "Sign in"
-    end
-  end
+
 end

@@ -6,8 +6,6 @@
 -#    %p
 -#      Search
 -#      %input{type: 'search', class: 'search'}
-
-
 .main
   %br
   %br
@@ -15,13 +13,13 @@
     = button_to 'Главная', books_path, method: 'get'
     - if @book.user_id == current_user.id
       .dropdown
-        %input.btn.btn-primary.dropdown-toggle{'data-toggle' => 'dropdown',:value => '' ,readonly: 'true'}
+        %input.btn.btn-primary.dropdown-toggle{'data-toggle' => 'dropdown',:value => '' ,readonly: 'true', id: 'drop'}
         %ul.dropdown-menu
           %li
             - if @book.status == 'in'
-              = button_to 'Edit', edit_book_path(@book),  method: :get
+              = button_to 'Изменить', edit_book_path(@book),  method: :get
           %li
-            = button_to 'Delete', [@book],  method: :delete
+            = button_to 'Удалить', [@book],  method: :delete
           %li
 
   %br
@@ -55,7 +53,7 @@
           %strong= @book.name
         %p
           Статус:
-          %strong= @book.status
+          %img{src: @book.status == 'in' ? "/uploads/green2.png" : "/uploads/red.png", class: 'status'}
         %p
           Автор:
           %strong= @book.author
@@ -95,4 +93,3 @@
                   %td= history.taken_in
                   %td= history.returned_in
           %br
-
