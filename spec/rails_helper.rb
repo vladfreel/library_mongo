@@ -92,17 +92,5 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  def sign_in(user, options={})
-    if options[:no_capybara]
-      #Sign in when not using Capybara
-      remember_token = User.new_remember_token
-      cookies[:remember_token] = remember_token
-      user.update_attribute(:remember_token, User.encrypt(remember_token))
-    else
-      visit 'users/sign_in'
-      fill_in "email",    with: user.email
-      fill_in "pass", with: user.password
-      click_button "Sign in"
-    end
-  end
+
 end

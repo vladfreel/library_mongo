@@ -61,7 +61,7 @@ RSpec.describe BooksController, type: :controller do
                                        status: 'in',
                                        img: 'asf',
                                        genre: 'asdfgva',
-                                       description: 'dsgdas'}}
+                                       description: 'dsgdas' } }
         expect(response).to redirect_to @book
         expect(response).to have_http_status(302)
       end
@@ -77,7 +77,7 @@ RSpec.describe BooksController, type: :controller do
     context 'with good data' do
       it 'updates status to out' do
         put :update, params:{ id: @book.id,
-                              book: { status: 'out'}}
+                              book: { status: 'out' } }
         expect(response).to redirect_to @book
         expect(response).to have_http_status(302)
       end
@@ -92,8 +92,8 @@ RSpec.describe BooksController, type: :controller do
     end
     context 'with good data' do
       it 'updates status to in' do
-        put :update, params:{ id: @book.id,
-                              book: { status: 'in'}}
+        put :update, params: { id: @book.id,
+                               book: { status: 'in' } }
         expect(response).to redirect_to @book
         expect(response).to have_http_status(302)
       end
