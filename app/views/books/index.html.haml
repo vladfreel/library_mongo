@@ -1,24 +1,71 @@
-%p#notice= notice
-%h1 Books
-%table
-  %thead
-    %tr
-      %th Name
-      %th Author
-      %th Img
-      %th Description
-      %th{:colspan => "3"}
-  %tbody
-    - @books.each do |book|
-      %tr
-        %td= book.name
-        %td= book.author
-        %td
-          %img{:src => "#{book.img}", :class => "images"}
-        %td= book.description
-        %td= link_to 'Show', book
-        %td= link_to 'Edit', edit_book_path(book)
-        %td= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Book', new_book_path
-= link_to "Exit", destroy_user_session_path, :method => :delete
+%body.body_color
+  .back_row
+    .col-lg-2
+    .col-lg-8
+      .main_head_wrap
+        .butts
+          = link_to 'Добавить книгу', new_book_path, method: :get, class: 'newbook'
+          = link_to 'Выйти', destroy_user_session_path, method: :delete, class: 'exit'
+      %h1.top_h1
+        Топ 5 книг
+      .main_wrap
+        .row
+          - @popular_books.take(5).each do |b|
+            .col-lg-12
+              %br
+              .book
+                %div
+                  %img{src: "#{b.img}", class: 'images'}
+                .desc
+                  .desc_name
+                    = link_to b.name, book_path(b)
+                  %table.tabs
+                    %tr
+                      %td
+                        |
+                        = b.genre
+                        |
+                        %img{src: b.status == 'in' ? "/green2.png" : "/red.png", class: 'status'}
+                    %tr
+                      %td
+                        = b.description
+                        %br
+                        %br
+                        .author
+                          = b.author
+      %h1.top_h1
+        Все книги
+      .main_wrap
+        .row
+          - @books.order(created_at: 'desc').each do |b|
+            .col-lg-12
+              %br
+              .book
+                %div
+                  %img{src: "#{b.img}", class: 'images'}
+                .desc
+                  .desc_name
+                    = link_to b.name, book_path(b)
+                  %table.tabs
+                    %tr
+                      %td
+                        |
+                        = b.genre
+                        |
+                        - if b.status == 'in'
+                          Статус
+                          %img{src: "/green2.png", class: 'status'}
+                        - else
+                          Статус
+                          %img{src: "/red.png", class: 'status'}
+                    %tr
+                      %td
+                        = b.description
+                        %br
+                        %br
+                        .author
+                          = b.author
+        = paginate @books
+      .main_foot_wrap
+    .col-lg-2
+  %br

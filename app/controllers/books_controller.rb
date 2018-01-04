@@ -1,50 +1,39 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
-  def new
-    @book = Book.new
-  end
-  def edit
-    @book = Book.find(params[:id])
-  end
-  def create
-    @book = Book.new(book_params)
-    @book.save!
-    redirect_to @book
-  end
-  def update
-    @histories = History.all
-    @book = Book.find(params[:id])
-    if @book.update(book_params)
-      if @book.status == 'out'
-        search_history_in
-      elsif @book.status == 'in'
-        search_history_out
-      end
-      redirect_to @book
-    else
-      render 'edit'
-    end
-  end
-  def show
-    @histories = History.all
-    @books = Book.all
-    @book = Book.find(params[:id])
-    @comments = Comment.where(book_id: @book.id)
-    @histories = @book.histories.all
-    @like = @book.likes.find_by(user_id: current_user.id) rescue nil
-    if !@like.nil?
-
-    else
-
-    end
-  end
+  before_action :popular, only: :index
+  before_action :find_book, only: [:show, :update, :edit, :update, :destroy]
+  before_action :update_status, only: :update
 
   def index
     @books = Book.all.page(params[:page]).per(20)
   end
 
+  def show
+    @like = @book.likes.find_by(user_id: current_user.id)
+    respond_to do |format|
+      format.html
+      format.json { render json: @book }
+    end
+  end
+
+  def new
+    @book = Book.new
+  end
+
+  def edit
+  end
+
+  def create
+    @book = Book.create!(book_params)
+    redirect_to @book
+  end
+
+  def update
+    @book.update!(book_params)
+    redirect_to book_path(@book.id)
+  end
+
   def destroy
-    @book = Book.find(params[:id])
     @book.destroy!
     redirect_to books_path
   end
@@ -52,28 +41,23 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:name, :author, :status, :img, :description, :user_id, tags_attributes: [:user_id, :id, :taken_in, :returned_in])
+    params.require(:book).permit(:name, :author, :genre, :status, :img, :description, :user_id)
   end
-  def search_history_in
-    History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
-  end
-  def search_history_out
-  @histories.each do |h|
-    if h.user_id == current_user.id && h.taken_in != ''
-      if h.returned_in != nil
-      else
-        History.update(returned_in: DateTime.now)
-    end
-    elsif h.user_id == current_user.id && h.taken_in != '' && h.returned_in != nil
-    elsif h.user_id == current_user.id
-    else
+
+  def update_status
+    if book_params[:status] == 'out'
       History.create(user_id: current_user.id, book_id: @book.id, taken_in: DateTime.now)
+    elsif book_params[:status] == 'in'
+      @histories = History.where(user_id: current_user.id, returned_in: nil, book_id: @book.id)
+      @histories.update(returned_in: DateTime.now) unless @histories.empty?
     end
   end
+
+  def find_book
+    @book = Book.find(params[:id])
   end
+
   def popular
-    @out = Book.select('books.*,
-    COUNT(likes.id) AS t_count').joins(:likes).group('
-    books.id').order('t_count DESC').limit(5)
+    @popular_books = Book.all.order_by(likes_count: :desc, histories_count: :desc)
   end
 end

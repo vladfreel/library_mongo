@@ -1,13 +1,13 @@
+# Comments
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  def new
-    @comment = Comment.new
-  end
   def create
     @book = Book.find(params[:book_id])
-    @comment = @book.comments.new(comment_params)
-    @comment.save!
-    redirect_to book_path(@book.id)
+    @comment = @book.comments.create!(comment_params)
+    respond_to do |format|
+      format.html { redirect_to book_path(@book) }
+      format.js
+    end
   end
 
   private
